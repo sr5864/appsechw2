@@ -3,6 +3,7 @@
 
 <head>
   {% include "title.html" %}
+  
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -33,6 +34,7 @@
 
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
 
+
   <div class="site-wrap">
 
     <div class="site-mobile-menu site-navbar-target">
@@ -57,7 +59,9 @@
             <div class="col-md-7 mx-auto text-center" data-aos="fade-up">
               <h1>{{ prod_name }}</h1>
             {% if director is not None %}
-              <p>Endorsed by {{director|safe}}!</p>
+            <!-- got ride of the word safe to make sure you can't do xss attack -->
+            <!-- https://docs.djangoproject.com/en/3.1/ref/templates/builtins/#std:templatefilter-safe -->
+              <p>Endorsed by {{director}}!</p>
             {% else %}
               <p> For all your card buying needs! </p>
             {% endif %}
@@ -75,7 +79,9 @@
                   Price: <strong class="text-black">{{ price }}</strong> <br>
                 </p>
                 {% if user is None %}
+
                 <form action="/gift/{{ prod_num }}" method="post">
+                  {% csrf_token %}
                   <div class="mb-4">
                     <input type="text" class="form-control mb-2" name="amount" id="amount" placeholder="$0.00">
                     <input type="text" class="form-control mb-2" name="username" id="username" placeholder="Username">
