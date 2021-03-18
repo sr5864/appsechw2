@@ -5,4 +5,4 @@ CSRF - wrote csrf.html which creates a hidden form to send a gift card to the te
     I fixed this by adding @csrf_protect on line 113 in view.py and {% csrf_token %} in the form of gift.html on line 84
 
 SQL - The signature field was vulnerable when you inputted your own giftcard so I made a giftcard with a SQL injection that got the desired salted password
-    I fixed this by changing the \'%s\'' % signature into \'%s\'' ie getting rid of the % signature in views.py on line 194
+    I fixed this by changing the \'%s\'' % signature into %s', [signature] in views.py on line 194 and %s' % str(request.user.id) into %s' , [str(request.user.id)] on line on line 195
