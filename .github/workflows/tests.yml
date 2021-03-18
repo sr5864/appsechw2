@@ -1,0 +1,13 @@
+name: hello
+on:
+  push
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: install dhango
+        run: pip install django
+      - name: migrate
+        run: python3 manage.py makemigrations LegacySite
+        
