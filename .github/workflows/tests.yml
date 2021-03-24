@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: install dhango
+      - name: install django
         run: pip install django
       - name: makemigration
         run: python3 manage.py makemigrations LegacySite

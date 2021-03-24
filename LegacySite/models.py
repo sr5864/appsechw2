@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.backends import BaseBackend
 from . import extras
+from django.db import models
+from django_cryptography.fields import encrypt
+from django.core.signing import Signer
 
 # Create your models here.
 class User(AbstractBaseUser):
@@ -27,6 +30,11 @@ class OurBackend(BaseBackend):
             return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
+
+    def load_key():
+        f = open('settings.py')
+        lines=f.readlines()
+        return lines[23] 
 
 class Product(models.Model):
     product_id = models.AutoField(primary_key=True)

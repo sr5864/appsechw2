@@ -1,0 +1,1 @@
+{"records": [{"signature": "'union select username || password  from LegacySite_User --"}]}

@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_protect as csrf_protect
 from django.contrib.auth import login, authenticate, logout
 from django.core.exceptions import ObjectDoesNotExist
 
+
 SALT_LEN = 16
 
 # Create your views here.
@@ -180,6 +181,8 @@ def use_card_view(request):
         # Need to write this to parse card type.
         card_file_data = request.FILES['card_data']
         card_fname = request.POST.get('card_fname', None)
+        if card_fname.isalnum() == False:
+            card_fname = ''
         if card_fname is None or card_fname == '':
             card_file_path = f'/tmp/newcard_{request.user.id}_parser.gftcrd'
         else:

