@@ -10,6 +10,8 @@ jobs:
         run: pip install django
       - name: install dotenv
         run:  pip install -U python-dotenv
+      - name: install cryptography
+        run: pip install django-cryptography
       - name: makemigration
         run: python3 manage.py makemigrations LegacySite
       - name: migrate
