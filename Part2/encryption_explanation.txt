@@ -1,2 +1,2 @@
 I encrypted my database by adding encrypt to the data in the card model and then iterating over all data in views.py in order to get the data unencrypted and allow the website to work as expected. 
-I then used an environment variable to store my key so that it is no longer public.
+I then used a .env file to store my key so that it is no longer public. In normal production I would not upload this file to github however since this is homework I am.

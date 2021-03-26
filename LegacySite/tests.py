@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 from io import StringIO
 import json
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 
 # Create your tests here.
@@ -38,16 +39,24 @@ class MyTestCase(TestCase):
     #     # self.client.post('/use/', {'file': giftcard})
     #     # print(response.content)
     #     # assert b'psswd' in response.content
-    #     f = StringIO()
-    #     json.dump({"records": [{"signature": "'union select username || password  from LegacySite_User --"}]}, f)
-    #     response = self.client.post('/use', {'file': f, 'card_fname': 'hi', 'card_supplied': False, 'card_data': f})
+    #     # f =  SimpleUploadedFile('/Part1/sqlinjection.gftcrd')
+        
+    #     obj = {"records": [{"signature": "'union select username || password  from LegacySite_User --"}]}
+        
+    #     f = StringIO(json.dumps(obj))
+    #     # with open('Part1/sqlinjection.gftcrd') as f:
+    #     response = self.client.post('/use.html', { 'card_fname': 'zq', 'card_supplied': True, 'card_data': f})
     #     print(response.content)
+    #     self.assertRaises(KeyError)
+
+
 
     # def test_commandInjection(self):
     #     self.client = Client()
     #     f = StringIO()
     #     json.dump({"merchant_id": "NYU Apparel Card", "customer_id": "test", "total_value": "20202020202", "records": [{"record_type": "amount_change", "amount_added": 2000, "signature": "[ insert crypto signature here ]"}]}, f)
     #     # print(f.getvalue())
-    #     response = self.client.post('/use', {'file': f, 'card_fname': '& echo 1 | netcat localhost http://127.0.0.1:8000/ &', 'card_supplied': False, 'card_data': f})
+    #     #  response = self.client.post('/use.html', { 'card_fname': 'zq', 'card_supplied': True, 'card_data': f})
+    #     response = self.client.post('/use', {'card_fname': '& echo hey,it worked &', 'card_supplied': True, 'card_data': f})
     #     print(response)
     #     self.assertNotContains(response.content, 'hey, my injection worked')

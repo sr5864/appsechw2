@@ -179,6 +179,7 @@ def use_card_view(request):
         # Post with specific card, use this card.
         context['card_list'] = None
         # Need to write this to parse card type.
+
         card_file_data = request.FILES['card_data']
         card_fname = request.POST.get('card_fname', None)
         if card_fname.isalnum() == False:
