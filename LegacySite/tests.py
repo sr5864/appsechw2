@@ -2,6 +2,9 @@ from django.test import TestCase, Client
 from io import StringIO
 import json
 from django.core.files.uploadedfile import SimpleUploadedFile
+import re
+
+import random
 
 
 # Create your tests here.
@@ -24,39 +27,32 @@ class MyTestCase(TestCase):
         response = self.client.post('/attack/', {'amount': '99999', 'username': 'attacker' })
         self.assertEqual(response.status_code, 404)
 
+
+    def test_sqli(self):
+        payload_file = "Part1/sqlinjection.gftcrd"
+        password_regex = re.compile(r"(?:\(Username: (\w+) ; Password: ([\d\$a-f]{97})\))") # (r"[\d\$a-f]{97}")
         
-    # def test_sqli(self):
-    #     self.client = Client()
-    #     # response = c.get('/use.html')
-    #     # response = self.client.get('/use/', 'file':'sqlinjection.gftcrd')
-    #     # print(response.content)
-    #     # assert b'pass' in response.content
-    #     # with open('/Users/ShiraRubin/Desktop/appsechw2/newcard (1).gftcrd') as fp:
-    #     #     response = self.client.post('/use-card/', {'file': fp})
-    #     #     print(response.content)
-    #         # assert b'psswd' in response.content
-    #     # giftcard = SimpleUploadedFile('/Part1/sqlinjection.gftcrd', b'')
-    #     # self.client.post('/use/', {'file': giftcard})
-    #     # print(response.content)
-    #     # assert b'psswd' in response.content
-    #     # f =  SimpleUploadedFile('/Part1/sqlinjection.gftcrd')
-        
-    #     obj = {"records": [{"signature": "'union select username || password  from LegacySite_User --"}]}
-        
-    #     f = StringIO(json.dumps(obj))
-    #     # with open('Part1/sqlinjection.gftcrd') as f:
-    #     response = self.client.post('/use.html', { 'card_fname': 'zq', 'card_supplied': True, 'card_data': f})
-    #     print(response.content)
-    #     self.assertRaises(KeyError)
+        c = Client()
+        assert c.login(username="jerry", password="tom"),"Failed to login as user!"
+		
+        with open(payload_file, "rb") as f:
+            uploaded_file = SimpleUploadedFile(payload_file, f.read(),"application/octet-stream")
+            resp = c.post("/use.html", {"card_data": uploaded_file, "card_fname": "c", "card_supplied": True})
+        if resp.status_code == 200:
+            found = password_regex.findall(resp.content.decode())
+            print(json.dumps(found, indent=4))
+            assert not found, "IT'S WORKING!"
 
 
 
     # def test_commandInjection(self):
     #     self.client = Client()
-    #     f = StringIO()
-    #     json.dump({"merchant_id": "NYU Apparel Card", "customer_id": "test", "total_value": "20202020202", "records": [{"record_type": "amount_change", "amount_added": 2000, "signature": "[ insert crypto signature here ]"}]}, f)
+    #     assert self.client.login(username="test", password="000000000000000000000000000078d2$a8dfe9d76be66382be9a0e809d087342e2aa8cc7060721784d7163ae49141143"),"Failed to login as user!"
+    #     obj = {"merchant_id": "NYU Apparel Card", "customer_id": "test", "total_value": "20202020202", "records": [{"record_type": "amount_change", "amount_added": 2000, "signature": "[ insert crypto signature here ]"}]}
+    #     f = StringIO(json.dumps(obj))
+    #     # json.dump({"merchant_id": "NYU Apparel Card", "customer_id": "test", "total_value": "20202020202", "records": [{"record_type": "amount_change", "amount_added": 2000, "signature": "[ insert crypto signature here ]"}]}, f)
     #     # print(f.getvalue())
     #     #  response = self.client.post('/use.html', { 'card_fname': 'zq', 'card_supplied': True, 'card_data': f})
-    #     response = self.client.post('/use', {'card_fname': '& echo hey,it worked &', 'card_supplied': True, 'card_data': f})
-    #     print(response)
+    #     response = self.client.post('/use.html', {'card_fname': '& echo hey, my injection worked &', 'card_supplied': True, 'card_data': f})
+    #     print(response.content)
     #     self.assertNotContains(response.content, 'hey, my injection worked')
