@@ -8,6 +8,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: install django
         run: pip install django
+      - name: install dotenv
+        run:  pip install -U python-dotenv
       - name: makemigration
         run: python3 manage.py makemigrations LegacySite
       - name: migrate
