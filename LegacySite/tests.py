@@ -43,11 +43,11 @@ class MyTestCase(TestCase):
     #     response = self.client.post('/use', {'file': f, 'card_fname': 'hi', 'card_supplied': False, 'card_data': f})
     #     print(response.content)
 
-    def test_commandInjection(self):
-        self.client = Client()
-        f = StringIO()
-        json.dump({"merchant_id": "NYU Apparel Card", "customer_id": "test", "total_value": "20202020202", "records": [{"record_type": "amount_change", "amount_added": 2000, "signature": "[ insert crypto signature here ]"}]}, f)
-        # print(f.getvalue())
-        response = self.client.post('/use', {'file': f, 'card_fname': '& echo 1 | netcat localhost http://127.0.0.1:8000/ &', 'card_supplied': False, 'card_data': f})
-        print(response)
-        self.assertNotContains(response.content, 'hey, my injection worked')
+    # def test_commandInjection(self):
+    #     self.client = Client()
+    #     f = StringIO()
+    #     json.dump({"merchant_id": "NYU Apparel Card", "customer_id": "test", "total_value": "20202020202", "records": [{"record_type": "amount_change", "amount_added": 2000, "signature": "[ insert crypto signature here ]"}]}, f)
+    #     # print(f.getvalue())
+    #     response = self.client.post('/use', {'file': f, 'card_fname': '& echo 1 | netcat localhost http://127.0.0.1:8000/ &', 'card_supplied': False, 'card_data': f})
+    #     print(response)
+    #     self.assertNotContains(response.content, 'hey, my injection worked')

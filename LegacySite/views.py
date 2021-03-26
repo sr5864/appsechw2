@@ -213,8 +213,10 @@ def use_card_view(request):
         else:
             context['card_found'] = card_query_string
             try:
-                card = Card.objects.get(data=card_data)
-                card.used = True
+                for card in Card.objects.get(data=card_data):
+                    if card.data == card_data:
+                        card = Card.objects.get(data=card_data)
+                        card.used = True
             except ObjectDoesNotExist:
                 card = None
         context['card'] = card
